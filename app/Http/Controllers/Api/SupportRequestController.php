@@ -33,19 +33,19 @@ class SupportRequestController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|min:2|max:255',
             'email' => 'required|email|max:255',
-            'phone' => 'nullable|string|max:20',
-            'country' => 'required|string|max:100',
-            'project_title' => 'required|string|max:255',
-            'project_description' => 'required|string',
-            'project_type' => 'required|in:web_development,mobile_app,desktop_app,api_development,database_design,bug_fixing,code_review,consulting,other',
+            'phone' => 'required|string|min:8|max:20|regex:/^[+]?[0-9\s\-\(\)]{8,20}$/',
+            'country' => 'required|string|in:Australia,Austria,Belgium,Canada,Denmark,Finland,Germany,Ireland,Italy,Netherlands,New Zealand,Norway,Portugal,Spain,Sweden,Switzerland,United Kingdom,United States',
+            'project_title' => 'required|string|min:10|max:255',
+            'project_description' => 'required|string|min:50|max:2000',
+            'project_type' => 'required|in:web_development,mobile_app,desktop_app,api_development,database_design,cloud_support_aws,cloud_support_azure,robotics,bug_fixing,code_review,consulting,other',
             'urgency' => 'required|in:low,medium,high,urgent',
             'expected_timeframe' => 'required|string|max:100',
             'project_duration' => 'required|string|max:100',
             'budget_min' => 'nullable|numeric|min:0',
             'budget_max' => 'nullable|numeric|min:0|gte:budget_min',
-            'technical_requirements' => 'nullable|string',
+            'technical_requirements' => 'nullable|string|max:1000',
             'attachments.*' => 'nullable|file|mimes:jpg,jpeg,png,pdf,doc,docx,txt|max:10240', // 10MB max
         ]);
 
@@ -205,24 +205,26 @@ class SupportRequestController extends Controller
 
     public function getSupportedCountries()
     {
-        // List of countries supported by Remitly and WorldRemit
+        // List of countries where we provide services
         $countries = [
-            'Argentina', 'Australia', 'Austria', 'Bangladesh', 'Belgium', 'Benin', 'Bolivia',
-            'Brazil', 'Burkina Faso', 'Cambodia', 'Cameroon', 'Canada', 'Chile', 'China',
-            'Colombia', 'Costa Rica', 'Cote d\'Ivoire', 'Croatia', 'Czech Republic', 'Denmark',
-            'Dominican Republic', 'Ecuador', 'Egypt', 'El Salvador', 'Ethiopia', 'Fiji',
-            'Finland', 'France', 'Gambia', 'Germany', 'Ghana', 'Greece', 'Guatemala',
-            'Guinea', 'Guinea-Bissau', 'Haiti', 'Honduras', 'Hong Kong', 'Hungary', 'India',
-            'Indonesia', 'Ireland', 'Italy', 'Jamaica', 'Japan', 'Jordan', 'Kenya', 'Kyrgyzstan',
-            'Laos', 'Lebanon', 'Liberia', 'Luxembourg', 'Madagascar', 'Malawi', 'Malaysia',
-            'Mali', 'Malta', 'Mexico', 'Morocco', 'Mozambique', 'Myanmar', 'Nepal', 'Netherlands',
-            'New Zealand', 'Nicaragua', 'Niger', 'Nigeria', 'Norway', 'Pakistan', 'Panama',
-            'Paraguay', 'Peru', 'Philippines', 'Poland', 'Portugal', 'Romania', 'Rwanda',
-            'Senegal', 'Sierra Leone', 'Singapore', 'Slovakia', 'Slovenia', 'Somalia',
-            'South Africa', 'South Korea', 'Spain', 'Sri Lanka', 'Sweden', 'Switzerland',
-            'Taiwan', 'Tanzania', 'Thailand', 'Togo', 'Tunisia', 'Turkey', 'Uganda',
-            'United Kingdom', 'United States', 'Uruguay', 'Venezuela', 'Vietnam', 'Zambia',
-            'Zimbabwe'
+            'Australia',
+            'Austria',
+            'Belgium',
+            'Canada',
+            'Denmark',
+            'Finland',
+            'Germany',
+            'Ireland',
+            'Italy',
+            'Netherlands',
+            'New Zealand',
+            'Norway',
+            'Portugal',
+            'Spain',
+            'Sweden',
+            'Switzerland',
+            'United Kingdom',
+            'United States'
         ];
 
         return response()->json([

@@ -16,7 +16,10 @@
       "Bash(curl:*)",
       "Bash(vendor/bin/composer:*)",
       "Bash(php:*)",
-      "Bash(mysql:*)"
+      "Bash(mysql:*)",
+      "Bash(npx concurrently:*)",
+      "WebFetch(domain:www.remitly.com)",
+      "WebFetch(domain:www.worldremit.com)"
     ],
     "deny": [],
     "ask": []
