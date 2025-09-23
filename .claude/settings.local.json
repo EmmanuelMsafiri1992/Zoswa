@@ -13,7 +13,10 @@
       "Bash(npm install)",
       "Bash(npm install:*)",
       "Bash(npx tailwindcss init:*)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "Bash(vendor/bin/composer:*)",
+      "Bash(php:*)",
+      "Bash(mysql:*)"
     ],
     "deny": [],
     "ask": []

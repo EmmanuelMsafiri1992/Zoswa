@@ -50,6 +50,14 @@
         .pulse-animation {
             animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
         }
+        .notification-item {
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .notification-item:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+            transform: translateX(2px);
+        }
     </style>
 </head>
 <body class="bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 min-h-screen">
@@ -83,6 +91,10 @@
                 <a href="#" onclick="showSection('users')" class="nav-item flex items-center px-4 py-3 text-gray-300 rounded-lg hover:bg-slate-700 hover:text-white transition-all duration-200 group admin-only">
                     <i class="fas fa-users w-5 h-5 mr-3 group-hover:scale-110 transition-transform"></i>
                     <span>Users</span>
+                </a>
+                <a href="#" onclick="showSection('support-requests')" class="nav-item flex items-center px-4 py-3 text-gray-300 rounded-lg hover:bg-slate-700 hover:text-white transition-all duration-200 group admin-only">
+                    <i class="fas fa-headset w-5 h-5 mr-3 group-hover:scale-110 transition-transform"></i>
+                    <span>Support Requests</span>
                 </a>
                 <a href="#" onclick="showSection('marketplace')" class="nav-item flex items-center px-4 py-3 text-gray-300 rounded-lg hover:bg-slate-700 hover:text-white transition-all duration-200 group">
                     <i class="fas fa-briefcase w-5 h-5 mr-3 group-hover:scale-110 transition-transform"></i>
@@ -133,7 +145,7 @@
                             <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
                         </div>
                         <!-- Notifications -->
-                        <button class="relative p-2 text-gray-600 hover:text-gray-900 transition-colors">
+                        <button onclick="showNotificationsModal()" class="relative p-2 text-gray-600 hover:text-gray-900 transition-colors">
                             <i class="fas fa-bell text-lg"></i>
                             <span class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">3</span>
                         </button>
@@ -276,15 +288,15 @@
                 <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20">
                     <h3 class="text-lg font-semibold text-gray-900 mb-6">Quick Actions</h3>
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        <button class="flex flex-col items-center p-4 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:from-blue-600 hover:to-blue-700 transition-all duration-200 transform hover:scale-105">
+                        <button onclick="openCourseModal()" class="flex flex-col items-center p-4 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:from-blue-600 hover:to-blue-700 transition-all duration-200 transform hover:scale-105">
                             <i class="fas fa-plus text-2xl mb-2"></i>
                             <span class="text-sm font-medium">Add Course</span>
                         </button>
-                        <button class="flex flex-col items-center p-4 rounded-xl bg-gradient-to-r from-green-500 to-green-600 text-white hover:from-green-600 hover:to-green-700 transition-all duration-200 transform hover:scale-105">
+                        <button onclick="openAddUserModal()" class="flex flex-col items-center p-4 rounded-xl bg-gradient-to-r from-green-500 to-green-600 text-white hover:from-green-600 hover:to-green-700 transition-all duration-200 transform hover:scale-105">
                             <i class="fas fa-user-plus text-2xl mb-2"></i>
                             <span class="text-sm font-medium">Add User</span>
                         </button>
-                        <button class="flex flex-col items-center p-4 rounded-xl bg-gradient-to-r from-purple-500 to-purple-600 text-white hover:from-purple-600 hover:to-purple-700 transition-all duration-200 transform hover:scale-105">
+                        <button onclick="showReportsModal()" class="flex flex-col items-center p-4 rounded-xl bg-gradient-to-r from-purple-500 to-purple-600 text-white hover:from-purple-600 hover:to-purple-700 transition-all duration-200 transform hover:scale-105">
                             <i class="fas fa-chart-bar text-2xl mb-2"></i>
                             <span class="text-sm font-medium">View Reports</span>
                         </button>
@@ -823,27 +835,12 @@
                         </div>
                     </div>
 
-                    <!-- Users Table -->
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full bg-white rounded-lg">
-                            <thead class="bg-gray-50">
-                                <tr>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Joined</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="users-table-body" class="divide-y divide-gray-200">
-                                <tr>
-                                    <td colspan="5" class="px-6 py-8 text-center text-gray-500">
-                                        <i class="fas fa-spinner fa-spin text-2xl mb-3"></i>
-                                        <p>Loading users...</p>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    <!-- Users Grid -->
+                    <div id="users-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div class="bg-white rounded-lg p-6 text-center text-gray-500">
+                            <i class="fas fa-spinner fa-spin text-2xl mb-3"></i>
+                            <p>Loading users...</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -946,6 +943,103 @@
                                     class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">
                                 Delete User
                             </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Student Progress Modal -->
+            <div id="student-progress-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center">
+                <div class="bg-white rounded-xl p-6 max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-semibold">Student Progress Report</h3>
+                        <div class="flex items-center space-x-3">
+                            <button onclick="downloadProgressReport()" class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors">
+                                <i class="fas fa-download mr-2"></i>Download Report
+                            </button>
+                            <button onclick="closeStudentProgressModal()" class="text-gray-400 hover:text-gray-600">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="student-progress-content">
+                        <!-- Progress content will be loaded here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Certificate Generation Modal -->
+            <div id="certificate-generation-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center">
+                <div class="bg-white rounded-xl p-6 max-w-md w-full mx-4">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-semibold">Generate Certificate</h3>
+                        <button onclick="closeCertificateGenerationModal()" class="text-gray-400 hover:text-gray-600">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div id="certificate-generation-content">
+                        <!-- Content will be loaded here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Support Requests Section -->
+            <div id="support-requests-section" class="content-section hidden">
+                <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-lg font-semibold text-gray-900">Support Requests</h3>
+                        <div class="flex items-center space-x-4">
+                            <select id="support-status-filter" class="text-sm border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" onchange="filterSupportRequests()">
+                                <option value="">All Status</option>
+                                <option value="pending">Pending</option>
+                                <option value="in_review">In Review</option>
+                                <option value="assigned">Assigned</option>
+                                <option value="in_progress">In Progress</option>
+                                <option value="completed">Completed</option>
+                                <option value="cancelled">Cancelled</option>
+                            </select>
+                            <select id="support-urgency-filter" class="text-sm border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" onchange="filterSupportRequests()">
+                                <option value="">All Urgency</option>
+                                <option value="low">Low</option>
+                                <option value="medium">Medium</option>
+                                <option value="high">High</option>
+                                <option value="urgent">Urgent</option>
+                            </select>
+                            <button onclick="refreshSupportRequests()" class="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-4 py-2 rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all duration-200">
+                                <i class="fas fa-sync-alt mr-2"></i>Refresh
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Support Requests Stats -->
+                    <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
+                        <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 text-center">
+                            <div class="text-2xl font-bold text-yellow-600" id="pending-count">-</div>
+                            <div class="text-sm text-yellow-600 font-medium">Pending</div>
+                        </div>
+                        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 text-center">
+                            <div class="text-2xl font-bold text-blue-600" id="in-progress-count">-</div>
+                            <div class="text-sm text-blue-600 font-medium">In Progress</div>
+                        </div>
+                        <div class="bg-green-50 border border-green-200 rounded-lg p-4 text-center">
+                            <div class="text-2xl font-bold text-green-600" id="completed-count">-</div>
+                            <div class="text-sm text-green-600 font-medium">Completed</div>
+                        </div>
+                        <div class="bg-red-50 border border-red-200 rounded-lg p-4 text-center">
+                            <div class="text-2xl font-bold text-red-600" id="urgent-count">-</div>
+                            <div class="text-sm text-red-600 font-medium">Urgent</div>
+                        </div>
+                        <div class="bg-purple-50 border border-purple-200 rounded-lg p-4 text-center">
+                            <div class="text-2xl font-bold text-purple-600" id="total-support-count">-</div>
+                            <div class="text-sm text-purple-600 font-medium">Total</div>
+                        </div>
+                    </div>
+
+                    <!-- Support Requests List -->
+                    <div id="support-requests-list" class="space-y-4">
+                        <div class="text-center py-8">
+                            <i class="fas fa-spinner fa-spin text-gray-400 text-2xl mb-4"></i>
+                            <p class="text-gray-500">Loading support requests...</p>
                         </div>
                     </div>
                 </div>
@@ -1433,12 +1527,423 @@
                 </div>
             </div>
 
+            <!-- Notifications Modal -->
+            <div id="notifications-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
+                <div class="bg-white rounded-2xl p-6 max-w-2xl w-full max-h-screen overflow-y-auto">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-xl font-bold text-gray-900">Notifications</h3>
+                        <button onclick="closeNotificationsModal()" class="text-gray-500 hover:text-gray-700">
+                            <i class="fas fa-times text-xl"></i>
+                        </button>
+                    </div>
+
+                    <div id="notifications-list" class="space-y-4">
+                        <!-- Sample notifications -->
+                        <div class="flex items-start p-4 bg-blue-50 border-l-4 border-blue-500 rounded-lg">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-info-circle text-blue-500 mt-1"></i>
+                            </div>
+                            <div class="ml-3 flex-1">
+                                <h4 class="text-sm font-medium text-blue-800">System Update</h4>
+                                <p class="text-sm text-blue-700 mt-1">The system has been updated with new features. Check out the latest enhancements!</p>
+                                <p class="text-xs text-blue-600 mt-2">2 hours ago</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start p-4 bg-green-50 border-l-4 border-green-500 rounded-lg">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-check-circle text-green-500 mt-1"></i>
+                            </div>
+                            <div class="ml-3 flex-1">
+                                <h4 class="text-sm font-medium text-green-800">Course Completed</h4>
+                                <p class="text-sm text-green-700 mt-1">Congratulations! You've completed the "Complete Web Development Bootcamp" course.</p>
+                                <p class="text-xs text-green-600 mt-2">1 day ago</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start p-4 bg-yellow-50 border-l-4 border-yellow-500 rounded-lg">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-exclamation-triangle text-yellow-500 mt-1"></i>
+                            </div>
+                            <div class="ml-3 flex-1">
+                                <h4 class="text-sm font-medium text-yellow-800">Certificate Expiring</h4>
+                                <p class="text-sm text-yellow-700 mt-1">Your certificate for "Advanced JavaScript" will expire in 30 days. Consider renewing it.</p>
+                                <p class="text-xs text-yellow-600 mt-2">3 days ago</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end space-x-3 mt-6">
+                        <button onclick="markAllAsRead()" class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50">
+                            Mark All as Read
+                        </button>
+                        <button onclick="closeNotificationsModal()" class="px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg hover:from-blue-600 hover:to-blue-700">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Add User Modal -->
+            <div id="add-user-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
+                <div class="bg-white rounded-2xl p-6 max-w-2xl w-full max-h-screen overflow-y-auto">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-xl font-bold text-gray-900">Add New User</h3>
+                        <button onclick="closeAddUserModal()" class="text-gray-500 hover:text-gray-700">
+                            <i class="fas fa-times text-xl"></i>
+                        </button>
+                    </div>
+
+                    <form id="add-user-form" onsubmit="submitAddUser(event)">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+                                <input type="text" id="new-user-name" required
+                                       class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                       placeholder="Enter full name">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                                <input type="email" id="new-user-email" required
+                                       class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                       placeholder="Enter email address">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                                <input type="password" id="new-user-password" required
+                                       class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                       placeholder="Enter password">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Role</label>
+                                <select id="new-user-role" required
+                                        class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                    <option value="">Select Role</option>
+                                    <option value="student">Student</option>
+                                    <option value="instructor">Instructor</option>
+                                    <option value="client">Client</option>
+                                    <option value="admin">Admin</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
+                                <input type="tel" id="new-user-phone"
+                                       class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                       placeholder="Enter phone number">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
+                                <select id="new-user-status"
+                                        class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                    <option value="1">Active</option>
+                                    <option value="0">Inactive</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Bio</label>
+                            <textarea id="new-user-bio" rows="3"
+                                      class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                      placeholder="Enter user bio (optional)"></textarea>
+                        </div>
+
+                        <div class="flex justify-end space-x-3">
+                            <button type="button" onclick="closeAddUserModal()"
+                                    class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50">
+                                Cancel
+                            </button>
+                            <button type="submit"
+                                    class="px-4 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg hover:from-green-600 hover:to-green-700">
+                                <i class="fas fa-user-plus mr-2"></i>Add User
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Reports Modal -->
+            <div id="reports-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
+                <div class="bg-white rounded-2xl p-6 max-w-4xl w-full max-h-screen overflow-y-auto">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-xl font-bold text-gray-900">System Reports</h3>
+                        <button onclick="closeReportsModal()" class="text-gray-500 hover:text-gray-700">
+                            <i class="fas fa-times text-xl"></i>
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                        <!-- Users Report Card -->
+                        <div class="bg-gradient-to-r from-blue-500 to-blue-600 text-white p-6 rounded-lg">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <h4 class="text-lg font-semibold">Total Users</h4>
+                                    <p id="total-users-count" class="text-3xl font-bold">-</p>
+                                </div>
+                                <i class="fas fa-users text-4xl opacity-80"></i>
+                            </div>
+                        </div>
+
+                        <!-- Courses Report Card -->
+                        <div class="bg-gradient-to-r from-green-500 to-green-600 text-white p-6 rounded-lg">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <h4 class="text-lg font-semibold">Total Courses</h4>
+                                    <p id="total-courses-count" class="text-3xl font-bold">-</p>
+                                </div>
+                                <i class="fas fa-graduation-cap text-4xl opacity-80"></i>
+                            </div>
+                        </div>
+
+                        <!-- Subscriptions Report Card -->
+                        <div class="bg-gradient-to-r from-purple-500 to-purple-600 text-white p-6 rounded-lg">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <h4 class="text-lg font-semibold">Active Subscriptions</h4>
+                                    <p id="total-subscriptions-count" class="text-3xl font-bold">-</p>
+                                </div>
+                                <i class="fas fa-credit-card text-4xl opacity-80"></i>
+                            </div>
+                        </div>
+
+                        <!-- Certificates Report Card -->
+                        <div class="bg-gradient-to-r from-orange-500 to-orange-600 text-white p-6 rounded-lg">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <h4 class="text-lg font-semibold">Certificates Issued</h4>
+                                    <p id="total-certificates-count" class="text-3xl font-bold">-</p>
+                                </div>
+                                <i class="fas fa-certificate text-4xl opacity-80"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Activity -->
+                    <div class="mb-6">
+                        <h4 class="text-lg font-semibold text-gray-800 mb-4">Recent Activity</h4>
+                        <div id="recent-activity" class="bg-gray-50 rounded-lg p-4 max-h-64 overflow-y-auto">
+                            <div class="space-y-2">
+                                <div class="flex items-center text-sm text-gray-600">
+                                    <i class="fas fa-user-plus text-green-500 mr-2"></i>
+                                    <span>New user registration: Alice Developer</span>
+                                    <span class="ml-auto">2 hours ago</span>
+                                </div>
+                                <div class="flex items-center text-sm text-gray-600">
+                                    <i class="fas fa-certificate text-blue-500 mr-2"></i>
+                                    <span>Certificate issued to Jane Student</span>
+                                    <span class="ml-auto">5 hours ago</span>
+                                </div>
+                                <div class="flex items-center text-sm text-gray-600">
+                                    <i class="fas fa-graduation-cap text-purple-500 mr-2"></i>
+                                    <span>Course completed: Complete Web Development Bootcamp</span>
+                                    <span class="ml-auto">1 day ago</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end space-x-3">
+                        <button onclick="exportReport()" class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50">
+                            <i class="fas fa-download mr-2"></i>Export Report
+                        </button>
+                        <button onclick="closeReportsModal()" class="px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg hover:from-blue-600 hover:to-blue-700">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+
             <div id="certificates-section" class="content-section hidden">
                 <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-6">Certificates</h3>
-                    <div class="text-center py-12">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-lg font-semibold text-gray-900">My Certificates</h3>
+                        <button onclick="refreshCertificates()" class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors">
+                            <i class="fas fa-sync-alt mr-2"></i>Refresh
+                        </button>
+                    </div>
+
+                    <!-- Certificates Loading State -->
+                    <div id="certificates-loading" class="text-center py-12">
+                        <i class="fas fa-spinner fa-spin text-4xl text-blue-500 mb-4"></i>
+                        <p class="text-gray-600">Loading your certificates...</p>
+                    </div>
+
+                    <!-- No Certificates State -->
+                    <div id="no-certificates" class="text-center py-12 hidden">
                         <i class="fas fa-certificate text-4xl text-yellow-500 mb-4"></i>
-                        <p class="text-gray-600">Certificate management coming soon</p>
+                        <h4 class="text-lg font-semibold text-gray-900 mb-2">No Certificates Yet</h4>
+                        <p class="text-gray-600 mb-4">Complete courses to earn certificates</p>
+                        <button onclick="showSection('courses')" class="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors">
+                            <i class="fas fa-graduation-cap mr-2"></i>Browse Courses
+                        </button>
+                    </div>
+
+                    <!-- Certificates Grid -->
+                    <div id="certificates-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 hidden">
+                        <!-- Certificates will be loaded here -->
+                    </div>
+
+                    <!-- Generate Certificate Modal -->
+                    <div id="generate-certificate-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center">
+                        <div class="bg-white rounded-xl p-6 max-w-md w-full mx-4">
+                            <div class="flex justify-between items-center mb-4">
+                                <h3 class="text-lg font-semibold">Generate Certificate</h3>
+                                <button onclick="closeGenerateCertificateModal()" class="text-gray-400 hover:text-gray-600">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                            <div id="generate-certificate-content">
+                                <!-- Content will be loaded here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Certificate Preview Modal -->
+                    <div id="certificate-preview-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center">
+                        <div class="bg-white rounded-xl p-6 max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+                            <div class="flex justify-between items-center mb-4">
+                                <h3 class="text-lg font-semibold">Certificate Preview</h3>
+                                <button onclick="closeCertificatePreviewModal()" class="text-gray-400 hover:text-gray-600">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                            <div id="certificate-preview-content">
+                                <!-- Certificate preview will be loaded here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Course Learning Section -->
+            <div id="course-learning-section" class="content-section hidden">
+                <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20">
+                    <div class="flex justify-between items-center mb-6">
+                        <div>
+                            <h3 id="learning-course-title" class="text-lg font-semibold text-gray-900">Course Learning</h3>
+                            <p id="learning-course-subtitle" class="text-sm text-gray-600">Interactive learning experience</p>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <button onclick="toggleTutorBot()" class="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors">
+                                <i class="fas fa-robot mr-2"></i>Tutor Bot
+                            </button>
+                            <button onclick="showSection('courses')" class="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg transition-colors">
+                                <i class="fas fa-arrow-left mr-2"></i>Back to Courses
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                        <!-- Lesson Navigation -->
+                        <div class="lg:col-span-1">
+                            <div class="bg-white/50 rounded-xl p-4 mb-4">
+                                <h4 class="font-semibold text-gray-900 mb-3">
+                                    <i class="fas fa-list mr-2"></i>Course Content
+                                </h4>
+                                <div id="lesson-list" class="space-y-2">
+                                    <!-- Lessons will be loaded here -->
+                                </div>
+                            </div>
+
+                            <!-- Progress Card -->
+                            <div class="bg-white/50 rounded-xl p-4">
+                                <h4 class="font-semibold text-gray-900 mb-3">
+                                    <i class="fas fa-chart-line mr-2"></i>Your Progress
+                                </h4>
+                                <div class="space-y-3">
+                                    <div>
+                                        <div class="flex justify-between text-sm mb-1">
+                                            <span>Course Progress</span>
+                                            <span id="progress-percentage">0%</span>
+                                        </div>
+                                        <div class="bg-gray-200 rounded-full h-2">
+                                            <div id="progress-bar" class="bg-green-500 h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+                                        </div>
+                                    </div>
+                                    <div class="text-sm text-gray-600">
+                                        <p><span id="completed-lessons">0</span> of <span id="total-lessons">0</span> lessons completed</p>
+                                        <p>Estimated time remaining: <span id="time-remaining">-- hours</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Main Learning Content -->
+                        <div class="lg:col-span-3">
+                            <div class="bg-white/50 rounded-xl p-6 min-h-[500px]">
+                                <div id="lesson-content" class="text-gray-900">
+                                    <!-- Lesson content will be loaded here -->
+                                    <div class="text-center py-12">
+                                        <i class="fas fa-spinner fa-spin text-4xl text-blue-500 mb-4"></i>
+                                        <p class="text-gray-600">Loading lesson content...</p>
+                                    </div>
+                                </div>
+
+                                <!-- Lesson Navigation -->
+                                <div class="flex justify-between items-center mt-6 pt-4 border-t border-gray-200">
+                                    <button id="prev-lesson" onclick="previousLesson()" class="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                                        <i class="fas fa-arrow-left mr-2"></i>Previous
+                                    </button>
+
+                                    <div class="flex items-center space-x-3">
+                                        <button onclick="markAsCompleted()" class="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors">
+                                            <i class="fas fa-check mr-2"></i>Mark Complete
+                                        </button>
+                                        <button onclick="toggleBookmark()" class="px-3 py-2 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg transition-colors">
+                                            <i class="fas fa-bookmark"></i>
+                                        </button>
+                                    </div>
+
+                                    <button id="next-lesson" onclick="nextLesson()" class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors">
+                                        Next<i class="fas fa-arrow-right ml-2"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tutor Bot Chat (hidden by default) -->
+            <div id="tutor-bot" class="fixed bottom-4 right-4 w-80 bg-white rounded-xl shadow-xl z-50 hidden">
+                <div class="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-4 rounded-t-xl">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <i class="fas fa-robot mr-2"></i>
+                            <span class="font-bold">Tutor Bot</span>
+                            <span class="ml-2 text-xs bg-green-500 px-2 py-1 rounded-full">Online</span>
+                        </div>
+                        <button onclick="toggleTutorBot()" class="text-white/80 hover:text-white">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="p-4 h-64 overflow-y-auto">
+                    <div id="chat-messages" class="space-y-3">
+                        <div class="flex items-start space-x-2">
+                            <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <div class="bg-gray-100 rounded-lg p-3 max-w-xs">
+                                <p class="text-sm">Hi! I'm your tutor bot. How can I help you with this lesson?</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-4 border-t">
+                    <div class="flex space-x-2">
+                        <input type="text" id="chat-input" placeholder="Ask me anything..." class="flex-1 p-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <button onclick="sendMessage()" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -1512,9 +2017,11 @@
                 'courses': 'Courses',
                 'analytics': 'Analytics & Reports',
                 'users': 'User Management',
+                'support-requests': 'Support Requests',
                 'marketplace': 'Marketplace',
                 'labs': 'Code Labs',
-                'certificates': 'Certificates'
+                'certificates': 'Certificates',
+                'course-learning': 'Course Learning'
             };
 
             const subtitles = {
@@ -1522,9 +2029,11 @@
                 'courses': 'Manage and browse available courses',
                 'analytics': 'View detailed analytics and reports',
                 'users': 'Manage platform users and permissions',
+                'support-requests': 'Manage client support requests and coding project inquiries',
                 'marketplace': 'Browse and manage marketplace projects',
                 'labs': 'Access browser-based development environments',
-                'certificates': 'View and manage course certificates'
+                'certificates': 'View and manage course certificates',
+                'course-learning': 'Interactive learning experience with lessons and exercises'
             };
 
             document.getElementById('page-title').textContent = titles[sectionName] || 'Dashboard';
@@ -1539,6 +2048,10 @@
                 loadAnalytics();
             } else if (sectionName === 'users') {
                 loadUsers();
+            } else if (sectionName === 'support-requests') {
+                loadSupportRequests();
+            } else if (sectionName === 'certificates') {
+                loadCertificates();
             } else if (sectionName === 'marketplace') {
                 loadProjects();
             } else if (sectionName === 'labs') {
@@ -2252,158 +2765,146 @@
         // User Management Functions
         let allUsers = [];
         let userToDelete = null;
+        let selectedStudent = null;
 
         // Load users data
         async function loadUsers() {
             try {
-                // Simulate API call - in real implementation, this would be an actual endpoint
-                const users = [
-                    {
-                        id: 1,
-                        name: 'Admin User',
-                        email: 'admin@zoswa.com',
-                        role: 'admin',
-                        phone: '+1 234-567-8901',
-                        bio: 'System administrator',
-                        is_active: true,
-                        created_at: '2024-01-15T10:30:00Z'
-                    },
-                    {
-                        id: 2,
-                        name: 'John Instructor',
-                        email: 'instructor@zoswa.com',
-                        role: 'instructor',
-                        phone: '+1 234-567-8902',
-                        bio: 'Senior web development instructor',
-                        is_active: true,
-                        created_at: '2024-02-20T14:15:00Z'
-                    },
-                    {
-                        id: 3,
-                        name: 'Jane Student',
-                        email: 'student@zoswa.com',
-                        role: 'student',
-                        phone: '+1 234-567-8903',
-                        bio: 'Aspiring web developer',
-                        is_active: true,
-                        created_at: '2024-03-10T09:45:00Z'
-                    },
-                    {
-                        id: 4,
-                        name: 'Bob Client',
-                        email: 'client@zoswa.com',
-                        role: 'client',
-                        phone: '+1 234-567-8904',
-                        bio: 'Looking for development services',
-                        is_active: true,
-                        created_at: '2024-03-25T16:20:00Z'
-                    },
-                    {
-                        id: 5,
-                        name: 'Alice Johnson',
-                        email: 'alice@example.com',
-                        role: 'student',
-                        phone: '+1 555-123-4567',
-                        bio: 'Data science enthusiast',
-                        is_active: true,
-                        created_at: '2024-04-01T11:30:00Z'
-                    },
-                    {
-                        id: 6,
-                        name: 'Michael Brown',
-                        email: 'michael@example.com',
-                        role: 'instructor',
-                        phone: '+1 555-987-6543',
-                        bio: 'Machine learning expert',
-                        is_active: false,
-                        created_at: '2024-04-05T13:45:00Z'
+                const response = await fetch('/api/users', {
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'Accept': 'application/json'
                     }
-                ];
+                });
 
-                allUsers = users;
-                displayUsers(allUsers);
-
+                if (response.ok) {
+                    const result = await response.json();
+                    allUsers = result.data || [];
+                    renderUsers(allUsers);
+                } else {
+                    showNotification('Failed to load users', 'error');
+                }
             } catch (error) {
                 console.error('Error loading users:', error);
-                document.getElementById('users-table-body').innerHTML = `
-                    <tr>
-                        <td colspan="5" class="px-6 py-8 text-center text-red-500">
-                            <i class="fas fa-exclamation-triangle text-2xl mb-3"></i>
-                            <p>Error loading users</p>
-                        </td>
-                    </tr>
-                `;
+                showNotification('Error loading users', 'error');
             }
         }
 
-        function displayUsers(users) {
-            const tableBody = document.getElementById('users-table-body');
-
-            if (!users || users.length === 0) {
-                tableBody.innerHTML = `
-                    <tr>
-                        <td colspan="5" class="px-6 py-8 text-center text-gray-500">
-                            <i class="fas fa-users text-4xl mb-4"></i>
-                            <p>No users found</p>
-                        </td>
-                    </tr>
-                `;
-                return;
-            }
-
-            const usersHTML = users.map(user => {
-                const initials = user.name.split(' ').map(n => n[0]).join('');
-                const roleColors = {
-                    'admin': 'bg-red-500',
-                    'instructor': 'bg-green-500',
-                    'student': 'bg-blue-500',
-                    'client': 'bg-purple-500'
-                };
-                const roleColor = roleColors[user.role] || 'bg-gray-500';
-
-                const joinedDate = new Date(user.created_at).toLocaleDateString();
-                const statusBadge = user.is_active
-                    ? '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Active</span>'
-                    : '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">Inactive</span>';
-
-                return `
-                    <tr class="hover:bg-gray-50">
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="flex items-center">
-                                <div class="w-10 h-10 ${roleColor} rounded-full flex items-center justify-center text-white text-sm font-bold mr-3">
-                                    ${initials}
-                                </div>
-                                <div>
-                                    <div class="text-sm font-medium text-gray-900">${user.name}</div>
-                                    <div class="text-sm text-gray-500">${user.email}</div>
-                                </div>
+        function renderUsers(users) {
+            const usersList = document.getElementById('users-list');
+            const usersHTML = users.map(user => `
+                <div class="bg-white rounded-lg p-4 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                    <div class="flex items-start justify-between">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold">
+                                ${user.name.charAt(0).toUpperCase()}
                             </div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 capitalize">
-                                ${user.role}
-                            </span>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            ${statusBadge}
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            ${joinedDate}
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                            <button onclick="editUser(${user.id})" class="text-indigo-600 hover:text-indigo-900 mr-3">
+                            <div>
+                                <h4 class="font-semibold text-gray-900">${user.name}</h4>
+                                <p class="text-sm text-gray-600">${user.email}</p>
+                                <span class="inline-block px-2 py-1 text-xs rounded-full ${getRoleColor(user.role)} mt-1">
+                                    ${user.role.charAt(0).toUpperCase() + user.role.slice(1)}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            ${user.role === 'student' ? `
+                                <button onclick="viewStudentProgress(${user.id})"
+                                        class="px-3 py-1 text-xs bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors">
+                                    <i class="fas fa-chart-line mr-1"></i>Progress
+                                </button>
+                                <button onclick="generateCertificateForStudent(${user.id})"
+                                        class="px-3 py-1 text-xs bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors">
+                                    <i class="fas fa-certificate mr-1"></i>Certificate
+                                </button>
+                            ` : ''}
+                            <button onclick="editUser(${user.id})"
+                                    class="px-3 py-1 text-xs bg-gray-500 hover:bg-gray-600 text-white rounded-lg transition-colors">
                                 <i class="fas fa-edit"></i>
                             </button>
-                            <button onclick="deleteUser(${user.id})" class="text-red-600 hover:text-red-900">
+                            <button onclick="deleteUser(${user.id})"
+                                    class="px-3 py-1 text-xs bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors">
                                 <i class="fas fa-trash"></i>
                             </button>
-                        </td>
-                    </tr>
-                `;
-            }).join('');
+                        </div>
+                    </div>
 
-            tableBody.innerHTML = usersHTML;
+                    ${user.role === 'student' ? `
+                        <div class="mt-3 pt-3 border-t border-gray-100">
+                            <div class="grid grid-cols-3 gap-4 text-center">
+                                <div>
+                                    <p class="text-xs text-gray-500">Courses</p>
+                                    <p class="font-semibold text-blue-600" id="user-${user.id}-courses">-</p>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-gray-500">Certificates</p>
+                                    <p class="font-semibold text-green-600" id="user-${user.id}-certificates">-</p>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-gray-500">Progress</p>
+                                    <p class="font-semibold text-purple-600" id="user-${user.id}-progress">-</p>
+                                </div>
+                            </div>
+                        </div>
+                    ` : ''}
+                </div>
+            `).join('');
+
+            usersList.innerHTML = usersHTML;
             document.getElementById('users-count').textContent = users.length;
+
+            // Load additional stats for students
+            users.filter(user => user.role === 'student').forEach(student => {
+                loadStudentStats(student.id);
+            });
+        }
+
+        function getRoleColor(role) {
+            const colors = {
+                'admin': 'bg-red-100 text-red-800',
+                'instructor': 'bg-blue-100 text-blue-800',
+                'student': 'bg-green-100 text-green-800',
+                'client': 'bg-purple-100 text-purple-800'
+            };
+            return colors[role] || 'bg-gray-100 text-gray-800';
+        }
+
+        async function loadStudentStats(studentId) {
+            try {
+                // Load subscriptions count
+                const subscriptionsResponse = await fetch(`/api/students/${studentId}/subscriptions`, {
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'Accept': 'application/json'
+                    }
+                });
+
+                // Load certificates count
+                const certificatesResponse = await fetch(`/api/students/${studentId}/certificates`, {
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'Accept': 'application/json'
+                    }
+                });
+
+                if (subscriptionsResponse.ok) {
+                    const subscriptionsData = await subscriptionsResponse.json();
+                    document.getElementById(`user-${studentId}-courses`).textContent = subscriptionsData.data?.length || 0;
+                }
+
+                if (certificatesResponse.ok) {
+                    const certificatesData = await certificatesResponse.json();
+                    document.getElementById(`user-${studentId}-certificates`).textContent = certificatesData.data?.length || 0;
+
+                    // Calculate average progress
+                    const avgProgress = certificatesData.data?.length > 0
+                        ? Math.round(certificatesData.data.reduce((sum, cert) => sum + cert.completion_percentage, 0) / certificatesData.data.length)
+                        : 0;
+                    document.getElementById(`user-${studentId}-progress`).textContent = avgProgress + '%';
+                }
+            } catch (error) {
+                console.error('Error loading student stats:', error);
+            }
         }
 
         function filterUsers() {
@@ -2421,14 +2922,14 @@
                 filteredUsers = filteredUsers.filter(user => user.is_active === isActive);
             }
 
-            displayUsers(filteredUsers);
+            renderUsers(filteredUsers);
         }
 
         function searchUsers() {
             const searchTerm = document.getElementById('user-search').value.toLowerCase();
 
             if (!searchTerm) {
-                displayUsers(allUsers);
+                renderUsers(allUsers);
                 return;
             }
 
@@ -2438,7 +2939,7 @@
                 user.role.toLowerCase().includes(searchTerm)
             );
 
-            displayUsers(filteredUsers);
+            renderUsers(filteredUsers);
         }
 
         function openUserModal(userId = null) {
@@ -2525,7 +3026,7 @@
                 }
 
                 closeUserModal();
-                displayUsers(allUsers);
+                renderUsers(allUsers);
 
             } catch (error) {
                 console.error('Error saving user:', error);
@@ -2557,13 +3058,343 @@
                 allUsers = allUsers.filter(u => u.id !== userToDelete);
 
                 closeDeleteUserModal();
-                displayUsers(allUsers);
+                renderUsers(allUsers);
                 showNotification('User deleted successfully!', 'success');
 
             } catch (error) {
                 console.error('Error deleting user:', error);
                 showNotification('Error deleting user', 'error');
             }
+        }
+
+        // Student Progress Management
+        async function viewStudentProgress(studentId) {
+            try {
+                selectedStudent = allUsers.find(user => user.id === studentId);
+                if (!selectedStudent) return;
+
+                const modal = document.getElementById('student-progress-modal');
+                const content = document.getElementById('student-progress-content');
+
+                content.innerHTML = '<div class="text-center py-8"><i class="fas fa-spinner fa-spin text-2xl text-blue-500"></i><p class="mt-2">Loading progress data...</p></div>';
+                modal.classList.remove('hidden');
+
+                // Load student data
+                const [subscriptionsResponse, certificatesResponse] = await Promise.all([
+                    fetch(`/api/students/${studentId}/subscriptions`, {
+                        headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/json' }
+                    }),
+                    fetch(`/api/students/${studentId}/certificates`, {
+                        headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/json' }
+                    })
+                ]);
+
+                const subscriptions = subscriptionsResponse.ok ? (await subscriptionsResponse.json()).data : [];
+                const certificates = certificatesResponse.ok ? (await certificatesResponse.json()).data : [];
+
+                renderStudentProgress(selectedStudent, subscriptions, certificates);
+            } catch (error) {
+                console.error('Error loading student progress:', error);
+                showNotification('Error loading student progress', 'error');
+            }
+        }
+
+        function renderStudentProgress(student, subscriptions, certificates) {
+            const content = document.getElementById('student-progress-content');
+
+            // Calculate statistics
+            const totalCourses = subscriptions.length;
+            const completedCourses = certificates.length;
+            const averageScore = certificates.length > 0
+                ? (certificates.reduce((sum, cert) => sum + parseFloat(cert.final_score || 0), 0) / certificates.length).toFixed(1)
+                : 0;
+            const completionRate = totalCourses > 0 ? Math.round((completedCourses / totalCourses) * 100) : 0;
+
+            content.innerHTML = `
+                <div class="space-y-6">
+                    <!-- Student Info Header -->
+                    <div class="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-4">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white text-2xl font-bold">
+                                ${student.name.charAt(0).toUpperCase()}
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-bold text-gray-900">${student.name}</h4>
+                                <p class="text-gray-600">${student.email}</p>
+                                <span class="inline-block px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm mt-1">
+                                    Student
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Progress Statistics -->
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div class="bg-blue-50 rounded-lg p-4 text-center">
+                            <div class="text-2xl font-bold text-blue-600">${totalCourses}</div>
+                            <div class="text-sm text-gray-600">Enrolled Courses</div>
+                        </div>
+                        <div class="bg-green-50 rounded-lg p-4 text-center">
+                            <div class="text-2xl font-bold text-green-600">${completedCourses}</div>
+                            <div class="text-sm text-gray-600">Completed</div>
+                        </div>
+                        <div class="bg-purple-50 rounded-lg p-4 text-center">
+                            <div class="text-2xl font-bold text-purple-600">${averageScore}</div>
+                            <div class="text-sm text-gray-600">Avg Score</div>
+                        </div>
+                        <div class="bg-orange-50 rounded-lg p-4 text-center">
+                            <div class="text-2xl font-bold text-orange-600">${completionRate}%</div>
+                            <div class="text-sm text-gray-600">Completion Rate</div>
+                        </div>
+                    </div>
+
+                    <!-- Course Progress Table -->
+                    <div>
+                        <h5 class="text-lg font-semibold mb-3">Course Progress</h5>
+                        <div class="overflow-x-auto">
+                            <table class="w-full border-collapse border border-gray-200 rounded-lg">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="border border-gray-200 px-4 py-2 text-left">Course</th>
+                                        <th class="border border-gray-200 px-4 py-2 text-center">Status</th>
+                                        <th class="border border-gray-200 px-4 py-2 text-center">Progress</th>
+                                        <th class="border border-gray-200 px-4 py-2 text-center">Score</th>
+                                        <th class="border border-gray-200 px-4 py-2 text-center">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${subscriptions.map(subscription => {
+                                        const certificate = certificates.find(cert => cert.course_id === subscription.course_id);
+                                        return `
+                                            <tr class="hover:bg-gray-50">
+                                                <td class="border border-gray-200 px-4 py-2">
+                                                    <div class="font-medium">${subscription.course?.title || 'Unknown Course'}</div>
+                                                    <div class="text-sm text-gray-500">${subscription.course?.category?.replace('_', ' ') || ''}</div>
+                                                </td>
+                                                <td class="border border-gray-200 px-4 py-2 text-center">
+                                                    <span class="px-2 py-1 rounded-full text-xs ${certificate ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}">
+                                                        ${certificate ? 'Completed' : 'In Progress'}
+                                                    </span>
+                                                </td>
+                                                <td class="border border-gray-200 px-4 py-2 text-center">
+                                                    <div class="w-full bg-gray-200 rounded-full h-2">
+                                                        <div class="bg-blue-500 h-2 rounded-full" style="width: ${certificate?.completion_percentage || 0}%"></div>
+                                                    </div>
+                                                    <span class="text-xs text-gray-500">${certificate?.completion_percentage || 0}%</span>
+                                                </td>
+                                                <td class="border border-gray-200 px-4 py-2 text-center">
+                                                    ${certificate ? certificate.final_score : '-'}
+                                                </td>
+                                                <td class="border border-gray-200 px-4 py-2 text-center">
+                                                    ${!certificate ? `
+                                                        <button onclick="generateCertificateForStudentCourse(${student.id}, ${subscription.course_id})"
+                                                                class="px-2 py-1 bg-green-500 hover:bg-green-600 text-white text-xs rounded transition-colors">
+                                                            Generate Certificate
+                                                        </button>
+                                                    ` : `
+                                                        <button onclick="viewCertificate(${certificate.id})"
+                                                                class="px-2 py-1 bg-blue-500 hover:bg-blue-600 text-white text-xs rounded transition-colors">
+                                                            View Certificate
+                                                        </button>
+                                                    `}
+                                                </td>
+                                            </tr>
+                                        `;
+                                    }).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        async function generateCertificateForStudent(studentId) {
+            try {
+                selectedStudent = allUsers.find(user => user.id === studentId);
+                if (!selectedStudent) return;
+
+                // Load student's subscriptions to show available courses
+                const response = await fetch(`/api/students/${studentId}/subscriptions`, {
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'Accept': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    const subscriptions = result.data || [];
+
+                    const modal = document.getElementById('certificate-generation-modal');
+                    const content = document.getElementById('certificate-generation-content');
+
+                    content.innerHTML = `
+                        <div class="space-y-4">
+                            <div class="bg-blue-50 p-4 rounded-lg">
+                                <h4 class="font-semibold text-blue-900">Student: ${selectedStudent.name}</h4>
+                                <p class="text-blue-700">${selectedStudent.email}</p>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Select Course</label>
+                                <select id="course-select" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <option value="">Choose a course...</option>
+                                    ${subscriptions.map(sub => `
+                                        <option value="${sub.course_id}" data-course-title="${sub.course?.title}">
+                                            ${sub.course?.title} - ${sub.course?.category?.replace('_', ' ')}
+                                        </option>
+                                    `).join('')}
+                                </select>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Final Score</label>
+                                    <input type="number" id="final-score" min="0" max="100" step="0.1"
+                                           class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                           placeholder="95.5">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Completion %</label>
+                                    <input type="number" id="completion-percentage" min="0" max="100" value="100"
+                                           class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                </div>
+                            </div>
+
+                            <div class="flex justify-end space-x-3 mt-6">
+                                <button onclick="closeCertificateGenerationModal()"
+                                        class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50">
+                                    Cancel
+                                </button>
+                                <button onclick="generateCertificateSubmit()"
+                                        class="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg">
+                                    Generate Certificate
+                                </button>
+                            </div>
+                        </div>
+                    `;
+
+                    modal.classList.remove('hidden');
+                }
+            } catch (error) {
+                console.error('Error loading student courses:', error);
+                showNotification('Error loading student courses', 'error');
+            }
+        }
+
+        async function generateCertificateSubmit() {
+            try {
+                const courseId = document.getElementById('course-select').value;
+                const finalScore = document.getElementById('final-score').value;
+                const completionPercentage = document.getElementById('completion-percentage').value;
+
+                if (!courseId) {
+                    showNotification('Please select a course', 'error');
+                    return;
+                }
+
+                const response = await fetch(`/api/admin/certificates/generate`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        student_id: selectedStudent.id,
+                        course_id: parseInt(courseId),
+                        final_score: finalScore ? parseFloat(finalScore) : null,
+                        completion_percentage: parseInt(completionPercentage)
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    showNotification('Certificate generated successfully!', 'success');
+                    closeCertificateGenerationModal();
+                    loadUsers(); // Refresh user list
+                } else {
+                    showNotification(result.message || 'Failed to generate certificate', 'error');
+                }
+            } catch (error) {
+                console.error('Error generating certificate:', error);
+                showNotification('Error generating certificate', 'error');
+            }
+        }
+
+        function closeStudentProgressModal() {
+            document.getElementById('student-progress-modal').classList.add('hidden');
+        }
+
+        function closeCertificateGenerationModal() {
+            document.getElementById('certificate-generation-modal').classList.add('hidden');
+        }
+
+        function downloadProgressReport() {
+            if (!selectedStudent) return;
+
+            // Generate and download a progress report
+            const reportData = {
+                student: selectedStudent,
+                generated_at: new Date().toISOString(),
+                // Add more report data as needed
+            };
+
+            const blob = new Blob([JSON.stringify(reportData, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `progress-report-${selectedStudent.name.replace(/\s+/g, '-')}-${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            showNotification('Progress report downloaded', 'success');
+        }
+
+        async function generateCertificateForStudentCourse(studentId, courseId) {
+            try {
+                selectedStudent = allUsers.find(user => user.id === studentId);
+                if (!selectedStudent) return;
+
+                const response = await fetch(`/api/admin/certificates/generate`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        student_id: studentId,
+                        course_id: courseId,
+                        final_score: 100,
+                        completion_percentage: 100
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    showNotification('Certificate generated successfully!', 'success');
+                    // Refresh the progress modal if it's open
+                    if (!document.getElementById('student-progress-modal').classList.contains('hidden')) {
+                        viewStudentProgress(studentId);
+                    }
+                } else {
+                    showNotification(result.message || 'Failed to generate certificate', 'error');
+                }
+            } catch (error) {
+                console.error('Error generating certificate:', error);
+                showNotification('Error generating certificate', 'error');
+            }
+        }
+
+        function viewCertificate(certificateId) {
+            // This would typically open a certificate viewer or download the certificate
+            showNotification('Certificate viewer not implemented yet', 'info');
         }
 
         // Load courses data
@@ -2659,7 +3490,7 @@
                                 <button class="px-6 py-2 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white rounded-lg cursor-default text-sm font-medium">
                                     <i class="fas fa-check mr-2"></i>Subscribed
                                 </button>
-                                <button onclick="window.open('/learn/${course.id}', '_blank')" class="px-6 py-2 bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-lg hover:from-purple-600 hover:to-purple-700 transition-all duration-200 transform hover:scale-105 text-sm font-medium">
+                                <button onclick="startLearning(${course.id})" class="px-6 py-2 bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-lg hover:from-purple-600 hover:to-purple-700 transition-all duration-200 transform hover:scale-105 text-sm font-medium">
                                     <i class="fas fa-play mr-2"></i>Start Learning
                                 </button>
                             ` : `
@@ -3435,6 +4266,362 @@
             document.getElementById('settings-modal').classList.add('hidden');
         }
 
+        function showNotificationsModal() {
+            document.getElementById('notifications-modal').classList.remove('hidden');
+        }
+
+        function closeNotificationsModal() {
+            document.getElementById('notifications-modal').classList.add('hidden');
+        }
+
+        function markAllAsRead() {
+            const notificationBadge = document.querySelector('.fa-bell').nextElementSibling;
+            if (notificationBadge) {
+                notificationBadge.textContent = '0';
+                notificationBadge.classList.add('hidden');
+            }
+            showNotification('All notifications marked as read', 'success');
+        }
+
+        // Add User Modal Functions
+        function openAddUserModal() {
+            if (user.role !== 'admin') {
+                showNotification('Access denied. Admin privileges required.', 'error');
+                return;
+            }
+            document.getElementById('add-user-modal').classList.remove('hidden');
+            document.getElementById('add-user-form').reset();
+        }
+
+        function closeAddUserModal() {
+            document.getElementById('add-user-modal').classList.add('hidden');
+        }
+
+        async function submitAddUser(event) {
+            event.preventDefault();
+
+            const formData = {
+                name: document.getElementById('new-user-name').value,
+                email: document.getElementById('new-user-email').value,
+                password: document.getElementById('new-user-password').value,
+                role: document.getElementById('new-user-role').value,
+                phone: document.getElementById('new-user-phone').value,
+                bio: document.getElementById('new-user-bio').value,
+                is_active: document.getElementById('new-user-status').value === '1'
+            };
+
+            try {
+                const response = await fetch('/api/auth/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token,
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    showNotification('User created successfully!', 'success');
+                    closeAddUserModal();
+                    if (typeof loadUsers === 'function') {
+                        loadUsers(); // Refresh users list if available
+                    }
+                } else {
+                    showNotification(result.message || 'Failed to create user', 'error');
+                }
+            } catch (error) {
+                console.error('Error creating user:', error);
+                showNotification('Error creating user', 'error');
+            }
+        }
+
+        // Reports Modal Functions
+        function showReportsModal() {
+            if (user.role !== 'admin') {
+                showNotification('Access denied. Admin privileges required.', 'error');
+                return;
+            }
+            document.getElementById('reports-modal').classList.remove('hidden');
+            loadReportsData();
+        }
+
+        function closeReportsModal() {
+            document.getElementById('reports-modal').classList.add('hidden');
+        }
+
+        async function loadReportsData() {
+            try {
+                // Load users count
+                const usersResponse = await fetch('/api/users', {
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'Accept': 'application/json'
+                    }
+                });
+                if (usersResponse.ok) {
+                    const usersData = await usersResponse.json();
+                    document.getElementById('total-users-count').textContent = usersData.data.length;
+                }
+
+                // Load courses count
+                const coursesResponse = await fetch('/api/courses', {
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'Accept': 'application/json'
+                    }
+                });
+                if (coursesResponse.ok) {
+                    const coursesData = await coursesResponse.json();
+                    document.getElementById('total-courses-count').textContent = coursesData.data.length;
+                }
+
+                // Load subscriptions count
+                const subscriptionsResponse = await fetch('/api/subscriptions', {
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'Accept': 'application/json'
+                    }
+                });
+                if (subscriptionsResponse.ok) {
+                    const subscriptionsData = await subscriptionsResponse.json();
+                    document.getElementById('total-subscriptions-count').textContent = subscriptionsData.data.length;
+                }
+
+                // Load certificates count
+                const certificatesResponse = await fetch('/api/certificates', {
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'Accept': 'application/json'
+                    }
+                });
+                if (certificatesResponse.ok) {
+                    const certificatesData = await certificatesResponse.json();
+                    document.getElementById('total-certificates-count').textContent = certificatesData.data.length;
+                }
+
+            } catch (error) {
+                console.error('Error loading reports data:', error);
+                showNotification('Error loading reports data', 'error');
+            }
+        }
+
+        function exportReport() {
+            // Create a simple report and download it
+            const reportData = {
+                generated: new Date().toISOString(),
+                users: document.getElementById('total-users-count').textContent,
+                courses: document.getElementById('total-courses-count').textContent,
+                subscriptions: document.getElementById('total-subscriptions-count').textContent,
+                certificates: document.getElementById('total-certificates-count').textContent
+            };
+
+            const reportContent = `Zoswa LMS System Report
+Generated: ${new Date().toLocaleString()}
+
+Summary:
+- Total Users: ${reportData.users}
+- Total Courses: ${reportData.courses}
+- Active Subscriptions: ${reportData.subscriptions}
+- Certificates Issued: ${reportData.certificates}
+
+Report generated by Zoswa Learning Management System
+`;
+
+            const blob = new Blob([reportContent], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `zoswa-report-${new Date().toISOString().split('T')[0]}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+
+            showNotification('Report exported successfully!', 'success');
+        }
+
+        // Student Progress Function
+        function showMyProgress() {
+            // Navigate to the certificates section to show progress
+            showSection('certificates');
+            showNotification('Your progress and certificates are shown below', 'info');
+        }
+
+        // Support Requests Functions
+        async function loadSupportRequests() {
+            if (user.role !== 'admin') {
+                showNotification('Access denied. Admin privileges required.', 'error');
+                return;
+            }
+
+            try {
+                // Load support requests
+                const response = await fetch('/api/support-requests', {
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'Accept': 'application/json'
+                    }
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    displaySupportRequests(result.data);
+                } else {
+                    showNotification('Failed to load support requests', 'error');
+                }
+
+                // Load stats
+                await loadSupportRequestStats();
+
+            } catch (error) {
+                console.error('Error loading support requests:', error);
+                showNotification('Error loading support requests', 'error');
+            }
+        }
+
+        async function loadSupportRequestStats() {
+            try {
+                const response = await fetch('/api/support-requests/stats', {
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'Accept': 'application/json'
+                    }
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    const stats = result.data;
+                    document.getElementById('pending-count').textContent = stats.pending;
+                    document.getElementById('in-progress-count').textContent = stats.in_progress;
+                    document.getElementById('completed-count').textContent = stats.completed;
+                    document.getElementById('urgent-count').textContent = stats.urgent;
+                    document.getElementById('total-support-count').textContent = stats.total;
+                }
+            } catch (error) {
+                console.error('Error loading support request stats:', error);
+            }
+        }
+
+        function displaySupportRequests(supportRequests) {
+            const container = document.getElementById('support-requests-list');
+
+            if (supportRequests.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-8">
+                        <i class="fas fa-inbox text-gray-400 text-3xl mb-4"></i>
+                        <p class="text-gray-500">No support requests found</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const html = supportRequests.map(request => {
+                const statusBadge = getStatusBadge(request.status);
+                const urgencyBadge = getUrgencyBadge(request.urgency);
+                const projectTypeBadge = getProjectTypeBadge(request.project_type);
+
+                return `
+                    <div class="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="flex-1">
+                                <h4 class="text-lg font-semibold text-gray-900 mb-2">${request.project_title}</h4>
+                                <div class="flex items-center space-x-3 mb-2">
+                                    <span class="px-2 py-1 text-xs font-medium rounded-full ${statusBadge}">${request.status.replace('_', ' ').toUpperCase()}</span>
+                                    <span class="px-2 py-1 text-xs font-medium rounded-full ${urgencyBadge}">${request.urgency.toUpperCase()}</span>
+                                    <span class="px-2 py-1 text-xs font-medium rounded-full ${projectTypeBadge}">${request.project_type.replace('_', ' ').toUpperCase()}</span>
+                                </div>
+                                <div class="text-sm text-gray-600 mb-2">
+                                    <strong>Client:</strong> ${request.name} (${request.email}) - ${request.country}
+                                </div>
+                                <div class="text-sm text-gray-600 mb-2">
+                                    <strong>Timeline:</strong> ${request.expected_timeframe} | <strong>Duration:</strong> ${request.project_duration}
+                                </div>
+                                <p class="text-gray-700 text-sm mb-3">${request.project_description.substring(0, 200)}${request.project_description.length > 200 ? '...' : ''}</p>
+                            </div>
+                            <div class="flex items-center space-x-2 ml-4">
+                                <button onclick="viewSupportRequest(${request.id})" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                                    <i class="fas fa-eye mr-1"></i>View
+                                </button>
+                                <button onclick="updateSupportRequestStatus(${request.id})" class="text-green-600 hover:text-green-800 text-sm font-medium">
+                                    <i class="fas fa-edit mr-1"></i>Update
+                                </button>
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center text-xs text-gray-500">
+                            <span>Submitted: ${new Date(request.created_at).toLocaleDateString()}</span>
+                            ${request.attachments && request.attachments.length > 0 ?
+                                `<span><i class="fas fa-paperclip mr-1"></i>${request.attachments.length} attachments</span>` :
+                                ''
+                            }
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            container.innerHTML = html;
+        }
+
+        function getStatusBadge(status) {
+            const badges = {
+                'pending': 'bg-yellow-100 text-yellow-800',
+                'in_review': 'bg-blue-100 text-blue-800',
+                'assigned': 'bg-purple-100 text-purple-800',
+                'in_progress': 'bg-indigo-100 text-indigo-800',
+                'completed': 'bg-green-100 text-green-800',
+                'cancelled': 'bg-red-100 text-red-800'
+            };
+            return badges[status] || 'bg-gray-100 text-gray-800';
+        }
+
+        function getUrgencyBadge(urgency) {
+            const badges = {
+                'low': 'bg-green-100 text-green-800',
+                'medium': 'bg-yellow-100 text-yellow-800',
+                'high': 'bg-orange-100 text-orange-800',
+                'urgent': 'bg-red-100 text-red-800'
+            };
+            return badges[urgency] || 'bg-gray-100 text-gray-800';
+        }
+
+        function getProjectTypeBadge(type) {
+            const badges = {
+                'web_development': 'bg-blue-100 text-blue-800',
+                'mobile_app': 'bg-green-100 text-green-800',
+                'desktop_app': 'bg-purple-100 text-purple-800',
+                'api_development': 'bg-indigo-100 text-indigo-800',
+                'database_design': 'bg-yellow-100 text-yellow-800',
+                'bug_fixing': 'bg-red-100 text-red-800',
+                'code_review': 'bg-orange-100 text-orange-800',
+                'consulting': 'bg-pink-100 text-pink-800',
+                'other': 'bg-gray-100 text-gray-800'
+            };
+            return badges[type] || 'bg-gray-100 text-gray-800';
+        }
+
+        function refreshSupportRequests() {
+            loadSupportRequests();
+            showNotification('Support requests refreshed', 'success');
+        }
+
+        function filterSupportRequests() {
+            // This would filter the displayed requests based on status and urgency
+            // For now, we'll just reload all requests
+            loadSupportRequests();
+        }
+
+        function viewSupportRequest(id) {
+            showNotification('Support request details viewer coming soon', 'info');
+        }
+
+        function updateSupportRequestStatus(id) {
+            showNotification('Support request status update coming soon', 'info');
+        }
+
         async function loadPayPalSettings() {
             try {
                 const response = await fetch('/api/paypal/settings', {
@@ -3536,6 +4723,579 @@
         function toggleMobileMenu() {
             document.getElementById('sidebar').classList.toggle('-translate-x-full');
         }
+
+        // Certificate Management Functions
+        let userCertificates = [];
+
+        async function loadCertificates() {
+            try {
+                document.getElementById('certificates-loading').classList.remove('hidden');
+                document.getElementById('no-certificates').classList.add('hidden');
+                document.getElementById('certificates-grid').classList.add('hidden');
+
+                const response = await fetch('/api/certificates', {
+                    headers: {
+                        'Authorization': 'Bearer ' + token
+                    }
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    userCertificates = result.data;
+                    renderCertificates();
+                } else {
+                    showNotification('Failed to load certificates', 'error');
+                }
+            } catch (error) {
+                console.error('Error loading certificates:', error);
+                showNotification('Error loading certificates', 'error');
+            } finally {
+                document.getElementById('certificates-loading').classList.add('hidden');
+            }
+        }
+
+        function renderCertificates() {
+            const certificatesGrid = document.getElementById('certificates-grid');
+            const noCertificates = document.getElementById('no-certificates');
+
+            if (userCertificates.length === 0) {
+                noCertificates.classList.remove('hidden');
+                certificatesGrid.classList.add('hidden');
+                return;
+            }
+
+            certificatesGrid.innerHTML = userCertificates.map(certificate => `
+                <div class="bg-gradient-to-br from-yellow-50 to-orange-50 border border-yellow-200 rounded-xl p-6 hover:shadow-lg transition-all duration-300">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex items-center">
+                            <i class="fas fa-certificate text-2xl text-yellow-600 mr-3"></i>
+                            <div>
+                                <h4 class="font-semibold text-gray-900">${certificate.course.title}</h4>
+                                <p class="text-sm text-gray-600">${certificate.certificate_number}</p>
+                            </div>
+                        </div>
+                        <span class="px-2 py-1 text-xs rounded-full ${
+                            certificate.status === 'active' ? 'bg-green-100 text-green-800' :
+                            certificate.status === 'revoked' ? 'bg-red-100 text-red-800' :
+                            'bg-gray-100 text-gray-800'
+                        }">
+                            ${certificate.status.charAt(0).toUpperCase() + certificate.status.slice(1)}
+                        </span>
+                    </div>
+
+                    <div class="space-y-2 mb-4">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Completion:</span>
+                            <span class="font-medium">${certificate.completion_percentage}%</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Score:</span>
+                            <span class="font-medium">${certificate.final_score || 'N/A'}</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Issued:</span>
+                            <span class="font-medium">${new Date(certificate.issued_date).toLocaleDateString()}</span>
+                        </div>
+                    </div>
+
+                    <div class="flex space-x-2">
+                        <button onclick="viewCertificate(${certificate.id})"
+                                class="flex-1 px-3 py-2 bg-blue-500 hover:bg-blue-600 text-white text-sm rounded-lg transition-colors">
+                            <i class="fas fa-eye mr-1"></i>View
+                        </button>
+                        <button onclick="downloadCertificate(${certificate.id})"
+                                class="flex-1 px-3 py-2 bg-green-500 hover:bg-green-600 text-white text-sm rounded-lg transition-colors">
+                            <i class="fas fa-download mr-1"></i>Download
+                        </button>
+                        <button onclick="shareCertificate(${certificate.id})"
+                                class="px-3 py-2 bg-purple-500 hover:bg-purple-600 text-white text-sm rounded-lg transition-colors">
+                            <i class="fas fa-share-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+
+            certificatesGrid.classList.remove('hidden');
+            noCertificates.classList.add('hidden');
+        }
+
+        async function generateCertificate(courseId) {
+            try {
+                const response = await fetch(`/api/certificates/generate/${courseId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    showNotification('Certificate generated successfully!', 'success');
+                    loadCertificates();
+                    closeGenerateCertificateModal();
+                } else {
+                    showNotification(result.message || 'Failed to generate certificate', 'error');
+                }
+            } catch (error) {
+                console.error('Error generating certificate:', error);
+                showNotification('Error generating certificate', 'error');
+            }
+        }
+
+        async function viewCertificate(certificateId) {
+            try {
+                const certificate = userCertificates.find(cert => cert.id === certificateId);
+                if (!certificate) return;
+
+                const modal = document.getElementById('certificate-preview-modal');
+                const content = document.getElementById('certificate-preview-content');
+
+                content.innerHTML = `
+                    <div class="certificate-template bg-gradient-to-br from-blue-50 to-purple-50 border-4 border-yellow-400 rounded-xl p-8 text-center">
+                        <div class="mb-6">
+                            <h1 class="text-4xl font-bold text-gray-900 mb-2">Certificate of Completion</h1>
+                            <div class="w-32 h-1 bg-gradient-to-r from-blue-500 to-purple-600 mx-auto rounded-full"></div>
+                        </div>
+
+                        <div class="mb-6">
+                            <p class="text-lg text-gray-700 mb-2">This is to certify that</p>
+                            <h2 class="text-3xl font-bold text-blue-600 mb-2">${certificate.user.name}</h2>
+                            <p class="text-lg text-gray-700">has successfully completed the course</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <h3 class="text-2xl font-bold text-purple-600 mb-4">${certificate.course.title}</h3>
+                            <div class="grid grid-cols-2 gap-4 max-w-md mx-auto">
+                                <div class="text-center">
+                                    <p class="text-sm text-gray-600">Completion Date</p>
+                                    <p class="font-semibold">${new Date(certificate.completion_date).toLocaleDateString()}</p>
+                                </div>
+                                <div class="text-center">
+                                    <p class="text-sm text-gray-600">Final Score</p>
+                                    <p class="font-semibold">${certificate.final_score || 'N/A'}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-6">
+                            <p class="text-sm text-gray-600 mb-2">Certificate Number</p>
+                            <p class="font-mono text-lg font-semibold text-gray-900">${certificate.certificate_number}</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <p class="text-sm text-gray-600 mb-2">Verification Code</p>
+                            <p class="font-mono text-sm text-gray-700">${certificate.verification_code}</p>
+                        </div>
+
+                        <div class="flex justify-center space-x-4 mt-8">
+                            <button onclick="downloadCertificate(${certificate.id})"
+                                    class="px-6 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors">
+                                <i class="fas fa-download mr-2"></i>Download PDF
+                            </button>
+                            <button onclick="shareCertificate(${certificate.id})"
+                                    class="px-6 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors">
+                                <i class="fas fa-share-alt mr-2"></i>Share
+                            </button>
+                        </div>
+                    </div>
+                `;
+
+                modal.classList.remove('hidden');
+            } catch (error) {
+                console.error('Error viewing certificate:', error);
+                showNotification('Error loading certificate preview', 'error');
+            }
+        }
+
+        async function downloadCertificate(certificateId) {
+            try {
+                const response = await fetch(`/api/certificates/${certificateId}/download`, {
+                    headers: {
+                        'Authorization': 'Bearer ' + token
+                    }
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    if (result.success) {
+                        // For now, we'll show a message. In a real app, you'd generate and download a PDF
+                        showNotification('Certificate download feature coming soon!', 'info');
+                    }
+                } else {
+                    showNotification('Failed to download certificate', 'error');
+                }
+            } catch (error) {
+                console.error('Error downloading certificate:', error);
+                showNotification('Error downloading certificate', 'error');
+            }
+        }
+
+        function shareCertificate(certificateId) {
+            const certificate = userCertificates.find(cert => cert.id === certificateId);
+            if (!certificate) return;
+
+            const verificationUrl = `${window.location.origin}/api/certificates/verify/${certificate.verification_code}`;
+
+            if (navigator.share) {
+                navigator.share({
+                    title: `${certificate.user.name}'s Certificate - ${certificate.course.title}`,
+                    text: `I've completed ${certificate.course.title} and earned a certificate!`,
+                    url: verificationUrl
+                });
+            } else {
+                // Fallback for browsers that don't support Web Share API
+                navigator.clipboard.writeText(verificationUrl).then(() => {
+                    showNotification('Verification link copied to clipboard!', 'success');
+                }).catch(() => {
+                    showNotification('Failed to copy verification link', 'error');
+                });
+            }
+        }
+
+        function refreshCertificates() {
+            loadCertificates();
+        }
+
+        function closeGenerateCertificateModal() {
+            document.getElementById('generate-certificate-modal').classList.add('hidden');
+        }
+
+        function closeCertificatePreviewModal() {
+            document.getElementById('certificate-preview-modal').classList.add('hidden');
+        }
+
+        // Course Learning Functions
+        let currentCourse = null;
+        let currentLessonIndex = 0;
+        let lessons = [];
+        let completedLessons = new Set();
+        let bookmarkedLessons = new Set();
+
+        async function startLearning(courseId) {
+            try {
+                const response = await fetch(`/api/courses/${courseId}`, {
+                    headers: {
+                        'Authorization': 'Bearer ' + token
+                    }
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    currentCourse = result.data;
+                    document.getElementById('learning-course-title').textContent = currentCourse.title;
+                    document.getElementById('learning-course-subtitle').textContent = `${currentCourse.difficulty} • ${currentCourse.category.replace('_', ' ')}`;
+
+                    generateLessons();
+                    loadLesson(0);
+                    showSection('course-learning');
+                    loadUserProgress();
+                } else {
+                    showNotification('Failed to load course content', 'error');
+                }
+            } catch (error) {
+                console.error('Error loading course:', error);
+                showNotification('Error loading course content', 'error');
+            }
+        }
+
+        function generateLessons() {
+            const baseCategories = {
+                'web_development': [
+                    'Introduction to Web Development',
+                    'HTML Fundamentals',
+                    'CSS Styling and Layouts',
+                    'JavaScript Basics',
+                    'DOM Manipulation',
+                    'Responsive Design',
+                    'CSS Frameworks',
+                    'JavaScript ES6+',
+                    'API Integration',
+                    'Project Development'
+                ],
+                'mobile_development': [
+                    'Mobile Development Overview',
+                    'Setup Development Environment',
+                    'UI/UX Design Principles',
+                    'Basic App Structure',
+                    'Navigation Systems',
+                    'State Management',
+                    'API Integration',
+                    'Local Storage',
+                    'Testing and Debugging',
+                    'App Deployment'
+                ],
+                'data_science': [
+                    'Introduction to Data Science',
+                    'Python for Data Science',
+                    'Data Collection and Cleaning',
+                    'Exploratory Data Analysis',
+                    'Statistical Analysis',
+                    'Data Visualization',
+                    'Machine Learning Basics',
+                    'Model Building',
+                    'Model Evaluation',
+                    'Real-world Projects'
+                ]
+            };
+
+            const category = currentCourse.category || 'web_development';
+            const lessonTitles = baseCategories[category] || baseCategories['web_development'];
+
+            lessons = lessonTitles.map((title, index) => ({
+                id: index + 1,
+                title: title,
+                content: generateLessonContent(title, category, index),
+                estimatedTime: 45 + Math.floor(Math.random() * 30),
+                exercises: []
+            }));
+
+            renderLessonList();
+            updateProgress();
+        }
+
+        function generateLessonContent(title, category, index) {
+            return `
+                <h2 class="text-2xl font-bold mb-6 text-gray-900">${title}</h2>
+
+                <div class="mb-6">
+                    <h3 class="text-xl font-semibold mb-3 text-gray-800">Learning Objectives</h3>
+                    <p class="mb-4 text-gray-700">In this lesson, you will learn about ${title.toLowerCase()} and how it applies to ${category.replace('_', ' ')} development.</p>
+
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+                        <h4 class="font-bold mb-2 text-blue-800">Key Topics Covered:</h4>
+                        <ul class="list-disc list-inside space-y-1 text-blue-700">
+                            <li>Core concepts and principles</li>
+                            <li>Practical implementation techniques</li>
+                            <li>Best practices and common patterns</li>
+                            <li>Real-world examples and use cases</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <h3 class="text-xl font-semibold mb-3 text-gray-800">Detailed Content</h3>
+                    <p class="mb-4 text-gray-700">This comprehensive lesson covers all aspects of ${title.toLowerCase()}, providing you with both theoretical knowledge and practical skills.</p>
+
+                    <div class="space-y-4">
+                        <div class="border-l-4 border-blue-500 pl-4">
+                            <h4 class="font-semibold text-gray-800">Theory</h4>
+                            <p class="text-sm text-gray-600">Understanding the fundamental concepts and principles</p>
+                        </div>
+                        <div class="border-l-4 border-green-500 pl-4">
+                            <h4 class="font-semibold text-gray-800">Practice</h4>
+                            <p class="text-sm text-gray-600">Hands-on exercises and coding challenges</p>
+                        </div>
+                        <div class="border-l-4 border-purple-500 pl-4">
+                            <h4 class="font-semibold text-gray-800">Application</h4>
+                            <p class="text-sm text-gray-600">Real-world projects and practical implementation</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <h3 class="text-xl font-semibold mb-3 text-gray-800">Interactive Example</h3>
+                    <div class="bg-gray-900 rounded-lg p-4 overflow-x-auto">
+                        <code class="text-green-400 font-mono text-sm">
+        // Example code for ${title}
+        function example() {
+            console.log("This is an example for ${title}");
+            // Implementation details would go here
+            return "Completed successfully";
+        }
+
+        example();
+                        </code>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderLessonList() {
+            const lessonList = document.getElementById('lesson-list');
+            lessonList.innerHTML = lessons.map((lesson, index) => `
+                <div class="lesson-item flex items-center justify-between p-2 rounded-lg cursor-pointer transition-colors ${
+                    index === currentLessonIndex ? 'bg-blue-100 border border-blue-300' : 'hover:bg-gray-100'
+                }" onclick="loadLesson(${index})">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-6 h-6 rounded-full flex items-center justify-center text-xs ${
+                            completedLessons.has(lesson.id) ? 'bg-green-500 text-white' : 'bg-gray-300 text-gray-600'
+                        }">
+                            ${completedLessons.has(lesson.id) ? '<i class="fas fa-check"></i>' : lesson.id}
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-gray-900">${lesson.title}</p>
+                            <p class="text-xs text-gray-500">${lesson.estimatedTime} min</p>
+                        </div>
+                    </div>
+                    ${bookmarkedLessons.has(lesson.id) ? '<i class="fas fa-bookmark text-yellow-500 text-xs"></i>' : ''}
+                </div>
+            `).join('');
+
+            document.getElementById('total-lessons').textContent = lessons.length;
+        }
+
+        function loadLesson(index) {
+            if (index < 0 || index >= lessons.length) return;
+
+            currentLessonIndex = index;
+            const lesson = lessons[index];
+
+            document.getElementById('lesson-content').innerHTML = lesson.content;
+
+            // Update navigation buttons
+            document.getElementById('prev-lesson').disabled = index === 0;
+            document.getElementById('next-lesson').disabled = index === lessons.length - 1;
+
+            renderLessonList();
+            saveProgress();
+        }
+
+        function previousLesson() {
+            if (currentLessonIndex > 0) {
+                loadLesson(currentLessonIndex - 1);
+            }
+        }
+
+        function nextLesson() {
+            if (currentLessonIndex < lessons.length - 1) {
+                loadLesson(currentLessonIndex + 1);
+            }
+        }
+
+        function markAsCompleted() {
+            const currentLesson = lessons[currentLessonIndex];
+            completedLessons.add(currentLesson.id);
+            renderLessonList();
+            updateProgress();
+            saveProgress();
+            showNotification('Lesson marked as completed!', 'success');
+
+            // Auto-advance to next lesson
+            if (currentLessonIndex < lessons.length - 1) {
+                setTimeout(() => nextLesson(), 1000);
+            }
+        }
+
+        function toggleBookmark() {
+            const currentLesson = lessons[currentLessonIndex];
+            if (bookmarkedLessons.has(currentLesson.id)) {
+                bookmarkedLessons.delete(currentLesson.id);
+                showNotification('Bookmark removed', 'info');
+            } else {
+                bookmarkedLessons.add(currentLesson.id);
+                showNotification('Lesson bookmarked!', 'success');
+            }
+            renderLessonList();
+            saveProgress();
+        }
+
+        function updateProgress() {
+            const completed = completedLessons.size;
+            const total = lessons.length;
+            const percentage = Math.round((completed / total) * 100);
+
+            document.getElementById('progress-percentage').textContent = percentage + '%';
+            document.getElementById('progress-bar').style.width = percentage + '%';
+            document.getElementById('completed-lessons').textContent = completed;
+
+            const remainingLessons = total - completed;
+            const avgTime = 60; // Average minutes per lesson
+            const remainingHours = Math.round((remainingLessons * avgTime) / 60);
+            document.getElementById('time-remaining').textContent = remainingHours + ' hours';
+        }
+
+        function saveProgress() {
+            if (!currentCourse) return;
+
+            const progress = {
+                courseId: currentCourse.id,
+                currentLessonIndex: currentLessonIndex,
+                completedLessons: Array.from(completedLessons),
+                bookmarkedLessons: Array.from(bookmarkedLessons),
+                lastAccessed: new Date().toISOString()
+            };
+            localStorage.setItem(`course_progress_${currentCourse.id}`, JSON.stringify(progress));
+        }
+
+        function loadUserProgress() {
+            if (!currentCourse) return;
+
+            const saved = localStorage.getItem(`course_progress_${currentCourse.id}`);
+            if (saved) {
+                const progress = JSON.parse(saved);
+                currentLessonIndex = progress.currentLessonIndex || 0;
+                completedLessons = new Set(progress.completedLessons || []);
+                bookmarkedLessons = new Set(progress.bookmarkedLessons || []);
+            }
+        }
+
+        // Tutor Bot functionality
+        function toggleTutorBot() {
+            const tutorBot = document.getElementById('tutor-bot');
+            tutorBot.classList.toggle('hidden');
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chat-input');
+            const message = input.value.trim();
+            if (!message) return;
+
+            addMessage(message, 'user');
+            input.value = '';
+
+            // Simulate bot response
+            setTimeout(() => {
+                const response = generateBotResponse(message);
+                addMessage(response, 'bot');
+            }, 1000 + Math.random() * 2000);
+        }
+
+        function addMessage(text, sender) {
+            const messagesContainer = document.getElementById('chat-messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'flex items-start space-x-2';
+
+            if (sender === 'user') {
+                messageDiv.innerHTML = `
+                    <div class="bg-blue-500 text-white rounded-lg p-3 max-w-xs ml-auto">
+                        <p class="text-sm">${text}</p>
+                    </div>
+                `;
+                messageDiv.classList.add('justify-end');
+            } else {
+                messageDiv.innerHTML = `
+                    <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="bg-gray-100 rounded-lg p-3 max-w-xs">
+                        <p class="text-sm">${text}</p>
+                    </div>
+                `;
+            }
+
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function generateBotResponse(message) {
+            const responses = [
+                "That's a great question! Let me help you with that.",
+                "I understand what you're asking. Here's how I'd approach this...",
+                "Good thinking! This is related to the concepts we covered in this lesson.",
+                "Let me break this down for you step by step.",
+                "That's exactly the kind of thinking that will make you a better developer!"
+            ];
+            return responses[Math.floor(Math.random() * responses.length)];
+        }
+
+        // Handle Enter key in chat input
+        document.addEventListener('keypress', function(e) {
+            if (e.target.id === 'chat-input' && e.key === 'Enter') {
+                sendMessage();
+            }
+        });
     </script>
 </body>
 </html>

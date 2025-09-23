@@ -273,5 +273,349 @@
         @if (Route::has('login'))
             <div class="h-14.5 hidden lg:block"></div>
         @endif
+
+        <!-- Support Request Section -->
+        <div class="w-full max-w-4xl mt-8 p-6 bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-slate-800 dark:to-slate-900 rounded-lg shadow-lg border border-blue-200 dark:border-slate-700">
+            <div class="text-center mb-6">
+                <h2 class="text-2xl font-bold text-blue-900 dark:text-blue-100 mb-2">
+                    <i class="fas fa-code text-blue-600 dark:text-blue-400 mr-3"></i>
+                    Need Help with Your Coding Project?
+                </h2>
+                <p class="text-blue-700 dark:text-blue-300 text-lg">
+                    Get expert assistance from our team of experienced developers worldwide
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6 mb-8">
+                <div class="text-center p-4 bg-white dark:bg-slate-800 rounded-lg shadow-sm">
+                    <i class="fas fa-globe text-3xl text-blue-600 dark:text-blue-400 mb-2"></i>
+                    <h3 class="font-semibold text-gray-800 dark:text-gray-200 mb-1">Global Reach</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-400">
+                        Serving clients in 80+ countries with localized support
+                    </p>
+                </div>
+                <div class="text-center p-4 bg-white dark:bg-slate-800 rounded-lg shadow-sm">
+                    <i class="fas fa-clock text-3xl text-green-600 dark:text-green-400 mb-2"></i>
+                    <h3 class="font-semibold text-gray-800 dark:text-gray-200 mb-1">Fast Turnaround</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-400">
+                        From quick fixes to complete projects, we deliver on time
+                    </p>
+                </div>
+                <div class="text-center p-4 bg-white dark:bg-slate-800 rounded-lg shadow-sm">
+                    <i class="fas fa-shield-alt text-3xl text-purple-600 dark:text-purple-400 mb-2"></i>
+                    <h3 class="font-semibold text-gray-800 dark:text-gray-200 mb-1">Quality Assured</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-400">
+                        Expert developers with proven track records
+                    </p>
+                </div>
+            </div>
+
+            <div class="text-center">
+                <button
+                    onclick="openSupportRequestModal()"
+                    class="inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold rounded-lg shadow-lg transition-all duration-200 transform hover:scale-105"
+                >
+                    <i class="fas fa-paper-plane mr-3"></i>
+                    Request Coding Support Now
+                </button>
+                <p class="mt-3 text-sm text-blue-600 dark:text-blue-400">
+                    Free consultation • No commitment required • 24/7 support
+                </p>
+            </div>
+        </div>
+
+        <!-- Support Request Modal -->
+        <div id="support-request-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 max-w-4xl w-full max-h-screen overflow-y-auto">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white">Request Coding Support</h3>
+                    <button onclick="closeSupportRequestModal()" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+
+                <form id="support-request-form" enctype="multipart/form-data">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <!-- Personal Information -->
+                        <div class="space-y-4">
+                            <h4 class="text-lg font-semibold text-gray-800 dark:text-gray-200 border-b border-gray-200 dark:border-gray-600 pb-2">
+                                Your Information
+                            </h4>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Full Name *</label>
+                                <input type="text" id="client-name" required
+                                       class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-700 dark:text-white"
+                                       placeholder="Enter your full name">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Email Address *</label>
+                                <input type="email" id="client-email" required
+                                       class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-700 dark:text-white"
+                                       placeholder="Enter your email address">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Phone Number</label>
+                                <input type="tel" id="client-phone"
+                                       class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-700 dark:text-white"
+                                       placeholder="Enter your phone number">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Country *</label>
+                                <select id="client-country" required
+                                        class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-700 dark:text-white">
+                                    <option value="">Select your country</option>
+                                    <!-- Countries will be loaded dynamically -->
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Project Information -->
+                        <div class="space-y-4">
+                            <h4 class="text-lg font-semibold text-gray-800 dark:text-gray-200 border-b border-gray-200 dark:border-gray-600 pb-2">
+                                Project Details
+                            </h4>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Project Title *</label>
+                                <input type="text" id="project-title" required
+                                       class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-700 dark:text-white"
+                                       placeholder="Brief title of your project">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Project Type *</label>
+                                <select id="project-type" required
+                                        class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-700 dark:text-white">
+                                    <option value="">Select project type</option>
+                                    <option value="web_development">Web Development</option>
+                                    <option value="mobile_app">Mobile App Development</option>
+                                    <option value="desktop_app">Desktop Application</option>
+                                    <option value="api_development">API Development</option>
+                                    <option value="database_design">Database Design</option>
+                                    <option value="bug_fixing">Bug Fixing</option>
+                                    <option value="code_review">Code Review</option>
+                                    <option value="consulting">Technical Consulting</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Urgency Level *</label>
+                                <select id="project-urgency" required
+                                        class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-700 dark:text-white">
+                                    <option value="">Select urgency</option>
+                                    <option value="low">Low - No rush</option>
+                                    <option value="medium">Medium - Within a week</option>
+                                    <option value="high">High - Within 2-3 days</option>
+                                    <option value="urgent">Urgent - ASAP</option>
+                                </select>
+                            </div>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Expected Timeframe *</label>
+                                    <input type="text" id="expected-timeframe" required
+                                           class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-700 dark:text-white"
+                                           placeholder="e.g., 2 weeks">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Project Duration *</label>
+                                    <input type="text" id="project-duration" required
+                                           class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-700 dark:text-white"
+                                           placeholder="e.g., 1 month">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project Description -->
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Project Description *</label>
+                        <textarea id="project-description" rows="4" required
+                                  class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-700 dark:text-white"
+                                  placeholder="Describe your project in detail. What do you need help with? What technologies are involved? What are your specific requirements?"></textarea>
+                    </div>
+
+                    <!-- Budget and Technical Requirements -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Budget Range (Optional)</label>
+                            <div class="grid grid-cols-2 gap-3">
+                                <input type="number" id="budget-min" min="0" step="0.01"
+                                       class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-700 dark:text-white"
+                                       placeholder="Min ($)">
+                                <input type="number" id="budget-max" min="0" step="0.01"
+                                       class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-700 dark:text-white"
+                                       placeholder="Max ($)">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Technical Requirements</label>
+                            <textarea id="technical-requirements" rows="3"
+                                      class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-700 dark:text-white"
+                                      placeholder="Specific technologies, frameworks, or platforms you need (e.g., React, Laravel, Python, etc.)"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- File Attachments -->
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Attachments (Optional)
+                            <span class="text-xs text-gray-500 ml-2">Screenshots, documents, or project files (Max 10MB each)</span>
+                        </label>
+                        <input type="file" id="project-attachments" multiple accept=".jpg,.jpeg,.png,.pdf,.doc,.docx,.txt"
+                               class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-700 dark:text-white">
+                        <div id="file-list" class="mt-2 space-y-1"></div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="flex justify-end space-x-3">
+                        <button type="button" onclick="closeSupportRequestModal()"
+                                class="px-6 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700">
+                            Cancel
+                        </button>
+                        <button type="submit"
+                                class="px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg hover:from-blue-700 hover:to-indigo-700 focus:ring-2 focus:ring-blue-500">
+                            <i class="fas fa-paper-plane mr-2"></i>Submit Request
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- FontAwesome Icons -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+        <!-- JavaScript for Support Request Form -->
+        <script>
+            let supportedCountries = [];
+
+            // Load supported countries on page load
+            document.addEventListener('DOMContentLoaded', function() {
+                loadSupportedCountries();
+                setupFileUpload();
+            });
+
+            async function loadSupportedCountries() {
+                try {
+                    const response = await fetch('/api/support-requests/countries');
+                    const result = await response.json();
+
+                    if (result.success) {
+                        supportedCountries = result.data;
+                        populateCountrySelect();
+                    }
+                } catch (error) {
+                    console.error('Error loading countries:', error);
+                }
+            }
+
+            function populateCountrySelect() {
+                const countrySelect = document.getElementById('client-country');
+                supportedCountries.forEach(country => {
+                    const option = document.createElement('option');
+                    option.value = country;
+                    option.textContent = country;
+                    countrySelect.appendChild(option);
+                });
+            }
+
+            function openSupportRequestModal() {
+                document.getElementById('support-request-modal').classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeSupportRequestModal() {
+                document.getElementById('support-request-modal').classList.add('hidden');
+                document.body.style.overflow = 'auto';
+                document.getElementById('support-request-form').reset();
+                document.getElementById('file-list').innerHTML = '';
+            }
+
+            function setupFileUpload() {
+                const fileInput = document.getElementById('project-attachments');
+                const fileList = document.getElementById('file-list');
+
+                fileInput.addEventListener('change', function() {
+                    fileList.innerHTML = '';
+                    Array.from(this.files).forEach((file, index) => {
+                        const fileItem = document.createElement('div');
+                        fileItem.className = 'flex items-center justify-between p-2 bg-gray-50 dark:bg-slate-700 rounded text-sm';
+                        fileItem.innerHTML = `
+                            <span class="text-gray-700 dark:text-gray-300">
+                                <i class="fas fa-file mr-2"></i>${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)
+                            </span>
+                            <button type="button" onclick="removeFile(${index})" class="text-red-500 hover:text-red-700">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        `;
+                        fileList.appendChild(fileItem);
+                    });
+                });
+            }
+
+            function removeFile(index) {
+                const fileInput = document.getElementById('project-attachments');
+                const dt = new DataTransfer();
+
+                Array.from(fileInput.files).forEach((file, i) => {
+                    if (i !== index) dt.items.add(file);
+                });
+
+                fileInput.files = dt.files;
+                fileInput.dispatchEvent(new Event('change'));
+            }
+
+            // Handle form submission
+            document.getElementById('support-request-form').addEventListener('submit', async function(e) {
+                e.preventDefault();
+
+                const formData = new FormData();
+
+                // Add form fields
+                formData.append('name', document.getElementById('client-name').value);
+                formData.append('email', document.getElementById('client-email').value);
+                formData.append('phone', document.getElementById('client-phone').value);
+                formData.append('country', document.getElementById('client-country').value);
+                formData.append('project_title', document.getElementById('project-title').value);
+                formData.append('project_description', document.getElementById('project-description').value);
+                formData.append('project_type', document.getElementById('project-type').value);
+                formData.append('urgency', document.getElementById('project-urgency').value);
+                formData.append('expected_timeframe', document.getElementById('expected-timeframe').value);
+                formData.append('project_duration', document.getElementById('project-duration').value);
+                formData.append('budget_min', document.getElementById('budget-min').value);
+                formData.append('budget_max', document.getElementById('budget-max').value);
+                formData.append('technical_requirements', document.getElementById('technical-requirements').value);
+
+                // Add files
+                const files = document.getElementById('project-attachments').files;
+                Array.from(files).forEach(file => {
+                    formData.append('attachments[]', file);
+                });
+
+                // Submit the form
+                try {
+                    const response = await fetch('/api/support-requests', {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    const result = await response.json();
+
+                    if (result.success) {
+                        alert('Your support request has been submitted successfully! We will contact you soon.');
+                        closeSupportRequestModal();
+                    } else {
+                        alert('Error submitting request: ' + (result.message || 'Please try again.'));
+                    }
+                } catch (error) {
+                    console.error('Error submitting support request:', error);
+                    alert('Error submitting request. Please try again.');
+                }
+            });
+
+            // Close modal when clicking outside
+            document.getElementById('support-request-modal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeSupportRequestModal();
+                }
+            });
+        </script>
     </body>
 </html>
