@@ -22,7 +22,8 @@
       "WebFetch(domain:www.worldremit.com)",
       "Bash(dir:*)",
       "Bash(\"C:\\laragon\\bin\\mysql\\mysql-8.0.30-winx64\\bin\\mysql.exe\" -u root -e \"CREATE DATABASE IF NOT EXISTS zoswa CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;\")",
-      "Bash(del export_sqlite_data.php import_mysql_data.php fix_and_import_users.php)"
+      "Bash(del export_sqlite_data.php import_mysql_data.php fix_and_import_users.php)",
+      "Bash(findstr:*)"
     ],
     "deny": [],
     "ask": []
