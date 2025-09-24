@@ -101,12 +101,18 @@ Route::prefix('support-requests')->group(function () {
     // Public route for getting supported countries
     Route::get('/countries', [App\Http\Controllers\Api\SupportRequestController::class, 'getSupportedCountries']);
 
-    // Admin-only routes
+    // Authenticated routes
     Route::middleware('auth:api')->group(function () {
+        // Admin-only routes
         Route::get('/', [App\Http\Controllers\Api\SupportRequestController::class, 'index'])->middleware('role:admin');
         Route::get('/stats', [App\Http\Controllers\Api\SupportRequestController::class, 'getStats'])->middleware('role:admin');
-        Route::get('/{supportRequest}', [App\Http\Controllers\Api\SupportRequestController::class, 'show'])->middleware('role:admin');
         Route::put('/{supportRequest}', [App\Http\Controllers\Api\SupportRequestController::class, 'update'])->middleware('role:admin');
         Route::delete('/{supportRequest}', [App\Http\Controllers\Api\SupportRequestController::class, 'destroy'])->middleware('role:admin');
+
+        // Client routes
+        Route::get('/my-requests', [App\Http\Controllers\Api\SupportRequestController::class, 'getMyRequests'])->middleware('role:client');
+
+        // Both admin and client can view individual requests (with restrictions in controller)
+        Route::get('/{supportRequest}', [App\Http\Controllers\Api\SupportRequestController::class, 'show'])->middleware('role:admin,client');
     });
 });

@@ -15,6 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'role' => \App\Http\Middleware\CheckRole::class,
             'cors' => \App\Http\Middleware\CorsMiddleware::class,
+            'dashboard.auth' => \App\Http\Middleware\DashboardAuth::class,
         ]);
 
         $middleware->api(prepend: [

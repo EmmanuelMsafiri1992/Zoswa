@@ -276,7 +276,7 @@
             resultDiv.innerHTML = '';
 
             try {
-                const response = await fetch('/api/auth/login', {
+                const response = await fetch('/auth/login', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -301,13 +301,9 @@
                         </div>
                     `;
 
-                    // Store authentication data
-                    localStorage.setItem('token', data.data.access_token);
-                    localStorage.setItem('user', JSON.stringify(data.data.user));
-
                     // Redirect to dashboard after a short delay
                     setTimeout(() => {
-                        window.location.href = '/dashboard';
+                        window.location.href = data.data.redirect_url || '/dashboard';
                     }, 1500);
                 } else {
                     resultDiv.innerHTML = `<span class="text-red-600 bg-red-50 px-3 py-2 rounded-lg"><i class="fas fa-exclamation-circle mr-1"></i>${data.message}</span>`;

@@ -476,16 +476,15 @@
         // Logout function
         async function logout() {
             try {
-                await fetch('/api/auth/logout', {
+                const response = await fetch('/auth/logout', {
                     method: 'POST',
                     headers: {
                         'Accept': 'application/json',
                         'X-CSRF-TOKEN': csrfToken
                     }
                 });
-                localStorage.removeItem('token');
-                localStorage.removeItem('user');
-                window.location.href = '/';
+                const data = await response.json();
+                window.location.href = data.redirect_url || '/';
             } catch (error) {
                 console.error('Logout error:', error);
                 window.location.href = '/';

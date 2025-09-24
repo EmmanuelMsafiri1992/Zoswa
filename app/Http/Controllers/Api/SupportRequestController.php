@@ -94,11 +94,21 @@ class SupportRequestController extends Controller
 
     public function show(Request $request, SupportRequest $supportRequest)
     {
-        // Only admins can view individual support requests
-        if (!$request->user() || !$request->user()->isAdmin()) {
+        $user = $request->user();
+
+        // Allow admins to view all requests, clients to view their own requests
+        if (!$user || (!$user->isAdmin() && !$user->isClient() && $supportRequest->email !== $user->email)) {
             return response()->json([
                 'success' => false,
                 'message' => 'Unauthorized'
+            ], 403);
+        }
+
+        // If client is requesting, ensure they can only see their own request
+        if ($user->isClient() && $supportRequest->email !== $user->email) {
+            return response()->json([
+                'success' => false,
+                'message' => 'You can only view your own support requests'
             ], 403);
         }
 
@@ -200,6 +210,28 @@ class SupportRequestController extends Controller
         return response()->json([
             'success' => true,
             'data' => $stats
+        ]);
+    }
+
+    public function getMyRequests(Request $request)
+    {
+        $user = $request->user();
+
+        // Only clients can access this endpoint
+        if (!$user || !$user->isClient()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized'
+            ], 403);
+        }
+
+        $supportRequests = SupportRequest::where('email', $user->email)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => $supportRequests
         ]);
     }
 
